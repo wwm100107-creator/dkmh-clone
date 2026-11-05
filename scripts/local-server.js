@@ -1,11 +1,11 @@
-const http = require('http');
+﻿const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const querystring = require('querystring');
 
 const PORT = process.env.PORT || 3000;
-const ROOT = __dirname;
+const ROOT = path.join(__dirname, '..');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -45,21 +45,21 @@ let registeredCourses = [
   {
     CurriculumID: '232_LLCT130105_01',
     MaMH: 'LLCT130105',
-    TenMH: 'Triết học Mác - Lênin',
+    TenMH: 'Triáº¿t há»c MÃ¡c - LÃªnin',
     STC: 3,
     Nhom: '01CLC',
-    TKB: 'Thứ 2 (Tiết 1-3) - Phòng A3-302',
-    GV: 'TS. Nguyễn Văn A',
+    TKB: 'Thá»© 2 (Tiáº¿t 1-3) - PhÃ²ng A3-302',
+    GV: 'TS. Nguyá»…n VÄƒn A',
     NgayDK: '05/11/2026 12:00:00'
   },
   {
     CurriculumID: '232_INIT130185_04',
     MaMH: 'INIT130185',
-    TenMH: 'Nhập môn ngành CNTT',
+    TenMH: 'Nháº­p mÃ´n ngÃ nh CNTT',
     STC: 3,
     Nhom: '04CLC',
-    TKB: 'Thứ 4 (Tiết 7-9) - Phòng A2-401',
-    GV: 'ThS. Trần Thị B',
+    TKB: 'Thá»© 4 (Tiáº¿t 7-9) - PhÃ²ng A2-401',
+    GV: 'ThS. Tráº§n Thá»‹ B',
     NgayDK: '05/11/2026 12:01:30'
   }
 ];
@@ -98,7 +98,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'POST' && (pathname === '/contact/process.php' || pathname === '/process.php')) {
     const data = await parsePostBody(req);
     res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.end(`Cảm ơn ${data.name || 'bạn'} (${data.email || 'N/A'})! Tin nhắn của bạn đã được hệ thống DKMH.NET ghi nhận.`);
+    res.end(`Cáº£m Æ¡n ${data.name || 'báº¡n'} (${data.email || 'N/A'})! Tin nháº¯n cá»§a báº¡n Ä‘Ã£ Ä‘Æ°á»£c há»‡ thá»‘ng DKMH.NET ghi nháº­n.`);
     return;
   }
 
@@ -109,7 +109,7 @@ const server = http.createServer(async (req, res) => {
     try { info = JSON.parse(data.data || '{}'); } catch (e) {}
     sendJson(res, 200, {
       status: 'success',
-      message: `[SwalAlert_Success] Đã mua thành công ${info.times || 15} lượt sử dụng (Giá: ${info.price || 0}đ)!`
+      message: `[SwalAlert_Success] ÄÃ£ mua thÃ nh cÃ´ng ${info.times || 15} lÆ°á»£t sá»­ dá»¥ng (GiÃ¡: ${info.price || 0}Ä‘)!`
     });
     return;
   }
@@ -159,7 +159,7 @@ const server = http.createServer(async (req, res) => {
             <button type="button" id="btn_huy_${idx}" class="btn btn-danger btn-xs"
               data-malhp="${c.CurriculumID}" data-tenmh="${c.TenMH}"
               onclick="HuyLopHocPhanDangKy(this)">
-              <i class="fa fa-trash"></i> Hủy HP
+              <i class="fa fa-trash"></i> Há»§y HP
             </button>
           </td>
         </tr>`).join('');
@@ -167,13 +167,13 @@ const server = http.createServer(async (req, res) => {
       const tableHtml = `
         <div class="box box-success" style="margin-top:15px;">
           <div class="box-header with-border">
-            <h3 class="box-title"><i class="fa fa-check-square-o"></i> Danh sách học phần đã đăng ký (${registeredCourses.length} môn)</h3>
+            <h3 class="box-title"><i class="fa fa-check-square-o"></i> Danh sÃ¡ch há»c pháº§n Ä‘Ã£ Ä‘Äƒng kÃ½ (${registeredCourses.length} mÃ´n)</h3>
           </div>
           <div class="box-body table-responsive">
             <table class="table table-bordered table-hover">
               <thead>
                 <tr class="bg-green">
-                  <th>STT</th><th>Mã MH</th><th>Tên môn học</th><th>STC</th><th>Mã LHP</th><th>Thời khóa biểu</th><th>Giảng viên</th><th>Thời gian ĐK</th><th>Thao tác</th>
+                  <th>STT</th><th>MÃ£ MH</th><th>TÃªn mÃ´n há»c</th><th>STC</th><th>MÃ£ LHP</th><th>Thá»i khÃ³a biá»ƒu</th><th>Giáº£ng viÃªn</th><th>Thá»i gian ÄK</th><th>Thao tÃ¡c</th>
                 </tr>
               </thead>
               <tbody>${rowsHtml}</tbody>
@@ -184,7 +184,7 @@ const server = http.createServer(async (req, res) => {
       sendJson(res, 200, {
         status: 'done',
         GetKQDK: true,
-        message: 'Đã tải danh sách kết quả đăng ký học phần thành công!',
+        message: 'ÄÃ£ táº£i danh sÃ¡ch káº¿t quáº£ Ä‘Äƒng kÃ½ há»c pháº§n thÃ nh cÃ´ng!',
         dt_show: registeredCourses,
         html_input: {
           id: 'show_table_kqdh',
@@ -203,7 +203,7 @@ const server = http.createServer(async (req, res) => {
       sendJson(res, 200, {
         status: 'done',
         HuyLopHocPhanDangKy: true,
-        message: `Đã hủy thành công lớp học phần: ${cancelIds.join(', ')}`
+        message: `ÄÃ£ há»§y thÃ nh cÃ´ng lá»›p há»c pháº§n: ${cancelIds.join(', ')}`
       });
       return;
     }
@@ -214,31 +214,31 @@ const server = http.createServer(async (req, res) => {
           <table class="table table-bordered table-striped">
             <thead>
               <tr class="bg-primary">
-                <th>Chọn</th><th>Mã môn học</th><th>Tên môn học</th><th>Số tín chỉ</th><th>Loại môn</th>
+                <th>Chá»n</th><th>MÃ£ mÃ´n há»c</th><th>TÃªn mÃ´n há»c</th><th>Sá»‘ tÃ­n chá»‰</th><th>Loáº¡i mÃ´n</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><input type="checkbox" onchange="SelectMonHocChoDangKy(this)" data-id="MATH132401" data-name="Toán cao cấp A1"></td>
-                <td><b>MATH132401</b></td><td>Toán cao cấp A1</td><td>3</td><td>Bắt buộc</td>
+                <td><input type="checkbox" onchange="SelectMonHocChoDangKy(this)" data-id="MATH132401" data-name="ToÃ¡n cao cáº¥p A1"></td>
+                <td><b>MATH132401</b></td><td>ToÃ¡n cao cáº¥p A1</td><td>3</td><td>Báº¯t buá»™c</td>
               </tr>
               <tr>
-                <td><input type="checkbox" onchange="SelectMonHocChoDangKy(this)" data-id="COMP130302" data-name="Cấu trúc dữ liệu và giải thuật"></td>
-                <td><b>COMP130302</b></td><td>Cấu trúc dữ liệu và giải thuật</td><td>3</td><td>Chuyên ngành</td>
+                <td><input type="checkbox" onchange="SelectMonHocChoDangKy(this)" data-id="COMP130302" data-name="Cáº¥u trÃºc dá»¯ liá»‡u vÃ  giáº£i thuáº­t"></td>
+                <td><b>COMP130302</b></td><td>Cáº¥u trÃºc dá»¯ liá»‡u vÃ  giáº£i thuáº­t</td><td>3</td><td>ChuyÃªn ngÃ nh</td>
               </tr>
               <tr>
-                <td><input type="checkbox" onchange="SelectMonHocChoDangKy(this)" data-id="ENGL130137" data-name="Anh văn 1"></td>
-                <td><b>ENGL130137</b></td><td>Anh văn 1</td><td>3</td><td>Đại cương</td>
+                <td><input type="checkbox" onchange="SelectMonHocChoDangKy(this)" data-id="ENGL130137" data-name="Anh vÄƒn 1"></td>
+                <td><b>ENGL130137</b></td><td>Anh vÄƒn 1</td><td>3</td><td>Äáº¡i cÆ°Æ¡ng</td>
               </tr>
             </tbody>
           </table>
-          <button type="button" class="btn btn-primary" onclick="GetLopHocPhan()"><i class="fa fa-arrow-right"></i> Xem danh sách Lớp học phần</button>
+          <button type="button" class="btn btn-primary" onclick="GetLopHocPhan()"><i class="fa fa-arrow-right"></i> Xem danh sÃ¡ch Lá»›p há»c pháº§n</button>
         </div>`;
 
       sendJson(res, 200, {
         status: 'done',
-        message: '[SwalAlert_Success] Đã tải danh sách môn học từ cổng đào tạo!',
-        message_noti: `<span class="text-success"><i class="fa fa-check"></i> Tải thành công 3 môn học trong Chương trình đào tạo (${body.ctdt || 'CTDT'}).</span>`,
+        message: '[SwalAlert_Success] ÄÃ£ táº£i danh sÃ¡ch mÃ´n há»c tá»« cá»•ng Ä‘Ã o táº¡o!',
+        message_noti: `<span class="text-success"><i class="fa fa-check"></i> Táº£i thÃ nh cÃ´ng 3 mÃ´n há»c trong ChÆ°Æ¡ng trÃ¬nh Ä‘Ã o táº¡o (${body.ctdt || 'CTDT'}).</span>`,
         html_input: {
           idOld: ['html_show_login'],
           id: 'html_show_monhoc',
@@ -252,8 +252,8 @@ const server = http.createServer(async (req, res) => {
 
     if (actionType === 'showDSLopHoc') {
       const classList = [
-        { CurriculumID: '232_MATH132401_01', MaMH: 'MATH132401', TenMH: 'Toán cao cấp A1', STC: 3, Nhom: '01CLC', TKB: 'Thứ 3 (Tiết 1-3) - A4-301', GV: 'PGS.TS Lê Văn C', SiSo: '42/45' },
-        { CurriculumID: '232_COMP130302_02', MaMH: 'COMP130302', TenMH: 'Cấu trúc dữ liệu và giải thuật', STC: 3, Nhom: '02CLC', TKB: 'Thứ 5 (Tiết 4-6) - PM-A5', GV: 'TS. Phạm Văn D', SiSo: '39/40' }
+        { CurriculumID: '232_MATH132401_01', MaMH: 'MATH132401', TenMH: 'ToÃ¡n cao cáº¥p A1', STC: 3, Nhom: '01CLC', TKB: 'Thá»© 3 (Tiáº¿t 1-3) - A4-301', GV: 'PGS.TS LÃª VÄƒn C', SiSo: '42/45' },
+        { CurriculumID: '232_COMP130302_02', MaMH: 'COMP130302', TenMH: 'Cáº¥u trÃºc dá»¯ liá»‡u vÃ  giáº£i thuáº­t', STC: 3, Nhom: '02CLC', TKB: 'Thá»© 5 (Tiáº¿t 4-6) - PM-A5', GV: 'TS. Pháº¡m VÄƒn D', SiSo: '39/40' }
       ];
       const rows = classList.map(c => `
         <tr>
@@ -270,17 +270,17 @@ const server = http.createServer(async (req, res) => {
         <div class="table-responsive">
           <table class="table table-bordered table-striped">
             <thead>
-              <tr class="bg-info"><th>Chọn</th><th>Mã LHP</th><th>Tên môn học</th><th>STC</th><th>Thời khóa biểu</th><th>Giảng viên</th><th>Sĩ số</th></tr>
+              <tr class="bg-info"><th>Chá»n</th><th>MÃ£ LHP</th><th>TÃªn mÃ´n há»c</th><th>STC</th><th>Thá»i khÃ³a biá»ƒu</th><th>Giáº£ng viÃªn</th><th>SÄ© sá»‘</th></tr>
             </thead>
             <tbody>${rows}</tbody>
           </table>
-          <button type="button" class="btn btn-success btn-lg" onclick="DangKyHocPhan()"><i class="fa fa-bolt"></i> Bắt đầu tự động Đăng ký học phần</button>
+          <button type="button" class="btn btn-success btn-lg" onclick="DangKyHocPhan()"><i class="fa fa-bolt"></i> Báº¯t Ä‘áº§u tá»± Ä‘á»™ng ÄÄƒng kÃ½ há»c pháº§n</button>
         </div>`;
 
       sendJson(res, 200, {
         status: 'done',
         dt_show: classList,
-        message: 'Đã tải danh sách lớp học phần!',
+        message: 'ÄÃ£ táº£i danh sÃ¡ch lá»›p há»c pháº§n!',
         html_input: {
           idOld: ['html_show_monhoc'],
           id: 'html_show_lophoc',
@@ -298,28 +298,28 @@ const server = http.createServer(async (req, res) => {
       // Transition from Cookie Login to Course Selection view
       const selectHtml = `
         <div class="form-group">
-          <label>Chọn Chương trình đào tạo:</label>
+          <label>Chá»n ChÆ°Æ¡ng trÃ¬nh Ä‘Ã o táº¡o:</label>
           <select id="ctdt" class="form-control" onchange="ChangeCTDT()">
-            <option value="CTDT_CNTT">Ngành Công nghệ Thông tin (Hệ Đại trà / CLC)</option>
-            <option value="CTDT_KT">Ngành Kinh tế & Quản trị</option>
+            <option value="CTDT_CNTT">NgÃ nh CÃ´ng nghá»‡ ThÃ´ng tin (Há»‡ Äáº¡i trÃ  / CLC)</option>
+            <option value="CTDT_KT">NgÃ nh Kinh táº¿ & Quáº£n trá»‹</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Chọn Loại đăng ký học phần:</label>
+          <label>Chá»n Loáº¡i Ä‘Äƒng kÃ½ há»c pháº§n:</label>
           <select id="loaidangkyhp" class="form-control">
-            <option value="KH">Đăng ký theo Kế hoạch</option>
-            <option value="NKH">Đăng ký Ngoài kế hoạch / Học cải thiện</option>
+            <option value="KH">ÄÄƒng kÃ½ theo Káº¿ hoáº¡ch</option>
+            <option value="NKH">ÄÄƒng kÃ½ NgoÃ i káº¿ hoáº¡ch / Há»c cáº£i thiá»‡n</option>
           </select>
         </div>
-        <button type="button" class="btn btn-primary" onclick="GetDSMonHoc($('#ctdt').val(), $('#loaidangkyhp').val(), 'Theo kế hoạch', [], 1)">
-          <i class="fa fa-list"></i> Tải danh sách môn học
+        <button type="button" class="btn btn-primary" onclick="GetDSMonHoc($('#ctdt').val(), $('#loaidangkyhp').val(), 'Theo káº¿ hoáº¡ch', [], 1)">
+          <i class="fa fa-list"></i> Táº£i danh sÃ¡ch mÃ´n há»c
         </button>`;
 
       sendJson(res, 200, {
         status: 'done',
         loginSuccess: true,
-        message: '[SwalAlert_Success] Đăng nhập bằng Cookie Google thành công!',
-        message_noti: '<span class="text-success"><b>[LOGIN OK]</b> Xác thực phiên Google OAuth Cookie thành công. Vui lòng chọn CTĐT để lấy môn học.</span>',
+        message: '[SwalAlert_Success] ÄÄƒng nháº­p báº±ng Cookie Google thÃ nh cÃ´ng!',
+        message_noti: '<span class="text-success"><b>[LOGIN OK]</b> XÃ¡c thá»±c phiÃªn Google OAuth Cookie thÃ nh cÃ´ng. Vui lÃ²ng chá»n CTÄT Ä‘á»ƒ láº¥y mÃ´n há»c.</span>',
         html_input: {
           id: 'html_show_monhoc_body',
           html: selectHtml,
@@ -337,7 +337,7 @@ const server = http.createServer(async (req, res) => {
         delay: 1,
         delay_busy: 2,
         loginSuccess: true,
-        message_noti: `<span class="text-warning"><i class="fa fa-refresh fa-spin"></i> [Lần thử #${stepI}] Đang gửi gói tin đăng ký (${decryptedClasses.length} mã LHP đã giải mã AES-128-CBC: <code>${decryptedClasses.map(d => d.decrypted).join(', ')}</code>)... Cổng trường đang bận, tự động thử lại sau 1s!</span>`
+        message_noti: `<span class="text-warning"><i class="fa fa-refresh fa-spin"></i> [Láº§n thá»­ #${stepI}] Äang gá»­i gÃ³i tin Ä‘Äƒng kÃ½ (${decryptedClasses.length} mÃ£ LHP Ä‘Ã£ giáº£i mÃ£ AES-128-CBC: <code>${decryptedClasses.map(d => d.decrypted).join(', ')}</code>)... Cá»•ng trÆ°á»ng Ä‘ang báº­n, tá»± Ä‘á»™ng thá»­ láº¡i sau 1s!</span>`
       });
     } else {
       // Add to registeredCourses
@@ -346,11 +346,11 @@ const server = http.createServer(async (req, res) => {
           registeredCourses.push({
             CurriculumID: item.maLHP,
             MaMH: item.maLHP.split('_')[0] || 'MH001',
-            TenMH: 'Học phần Đăng ký Nhanh (' + item.maLHP + ')',
+            TenMH: 'Há»c pháº§n ÄÄƒng kÃ½ Nhanh (' + item.maLHP + ')',
             STC: 3,
             Nhom: '01',
-            TKB: 'Thứ 6 (Tiết 1-3) - Phòng Trung Tâm',
-            GV: 'GV. Hệ Thống',
+            TKB: 'Thá»© 6 (Tiáº¿t 1-3) - PhÃ²ng Trung TÃ¢m',
+            GV: 'GV. Há»‡ Thá»‘ng',
             NgayDK: new Date().toLocaleString('vi-VN')
           });
         }
@@ -359,9 +359,9 @@ const server = http.createServer(async (req, res) => {
         status: 'done',
         RequestDkmh: true,
         loginSuccess: true,
-        message: '[SwalAlert_Success] Đã đăng ký thành công toàn bộ lớp học phần!',
-        MessDoneAct: `Hoàn tất đăng ký tự động sau ${stepI} lần gửi request! Bạn có thể bấm "Xem kết quả đăng ký" ở bên dưới để kiểm tra hoặc hủy môn.`,
-        message_noti: `<span class="text-success"><b><i class="fa fa-check-circle"></i> [THÀNH CÔNG ở lần thử #${stepI}]</b> Đã đăng ký thành công: <b>${decryptedClasses.map(d => d.maLHP).join(', ') || 'Các lớp đã chọn'}</b>!</span>`
+        message: '[SwalAlert_Success] ÄÃ£ Ä‘Äƒng kÃ½ thÃ nh cÃ´ng toÃ n bá»™ lá»›p há»c pháº§n!',
+        MessDoneAct: `HoÃ n táº¥t Ä‘Äƒng kÃ½ tá»± Ä‘á»™ng sau ${stepI} láº§n gá»­i request! Báº¡n cÃ³ thá»ƒ báº¥m "Xem káº¿t quáº£ Ä‘Äƒng kÃ½" á»Ÿ bÃªn dÆ°á»›i Ä‘á»ƒ kiá»ƒm tra hoáº·c há»§y mÃ´n.`,
+        message_noti: `<span class="text-success"><b><i class="fa fa-check-circle"></i> [THÃ€NH CÃ”NG á»Ÿ láº§n thá»­ #${stepI}]</b> ÄÃ£ Ä‘Äƒng kÃ½ thÃ nh cÃ´ng: <b>${decryptedClasses.map(d => d.maLHP).join(', ') || 'CÃ¡c lá»›p Ä‘Ã£ chá»n'}</b>!</span>`
       });
     }
     return;
@@ -374,13 +374,13 @@ const server = http.createServer(async (req, res) => {
       sendJson(res, 200, {
         status: 'done',
         type: 'locdsnhomto',
-        message: `[SwalAlert_Success] Đăng nhập tài khoản ${body.username || 'Sinh viên'} thành công!`,
-        message_noti: `<span class="text-success"><i class="fa fa-check"></i> Đã đăng nhập MSSV <b>${body.username || 'SV'}</b> và tải danh sách nhóm tổ học phần mở trong học kỳ.</span>`,
+        message: `[SwalAlert_Success] ÄÄƒng nháº­p tÃ i khoáº£n ${body.username || 'Sinh viÃªn'} thÃ nh cÃ´ng!`,
+        message_noti: `<span class="text-success"><i class="fa fa-check"></i> ÄÃ£ Ä‘Äƒng nháº­p MSSV <b>${body.username || 'SV'}</b> vÃ  táº£i danh sÃ¡ch nhÃ³m tá»• há»c pháº§n má»Ÿ trong há»c ká»³.</span>`,
         data: {
           ds_nhom_to: [
-            { id_to_hoc: 'TO_001', ma_mon: 'IT001', ten_mon: 'Lập trình hướng đối tượng', nhom_to: '01', so_tc: 4, tkb: 'Thứ 2 (Tiết 1-4) - P.C102', sl_cl: 8, is_dk: false, enable: true },
-            { id_to_hoc: 'TO_002', ma_mon: 'IT002', ten_mon: 'Cơ sở dữ liệu', nhom_to: '02', so_tc: 4, tkb: 'Thứ 4 (Tiết 6-9) - P.B205', sl_cl: 15, is_dk: false, enable: true },
-            { id_to_hoc: 'TO_003', ma_mon: 'MA001', ten_mon: 'Xác suất thống kê', nhom_to: '01', so_tc: 3, tkb: 'Thứ 6 (Tiết 1-3) - P.A108', sl_cl: 3, is_dk: false, enable: true }
+            { id_to_hoc: 'TO_001', ma_mon: 'IT001', ten_mon: 'Láº­p trÃ¬nh hÆ°á»›ng Ä‘á»‘i tÆ°á»£ng', nhom_to: '01', so_tc: 4, tkb: 'Thá»© 2 (Tiáº¿t 1-4) - P.C102', sl_cl: 8, is_dk: false, enable: true },
+            { id_to_hoc: 'TO_002', ma_mon: 'IT002', ten_mon: 'CÆ¡ sá»Ÿ dá»¯ liá»‡u', nhom_to: '02', so_tc: 4, tkb: 'Thá»© 4 (Tiáº¿t 6-9) - P.B205', sl_cl: 15, is_dk: false, enable: true },
+            { id_to_hoc: 'TO_003', ma_mon: 'MA001', ten_mon: 'XÃ¡c suáº¥t thá»‘ng kÃª', nhom_to: '01', so_tc: 3, tkb: 'Thá»© 6 (Tiáº¿t 1-3) - P.A108', sl_cl: 3, is_dk: false, enable: true }
           ]
         }
       });
@@ -391,9 +391,9 @@ const server = http.createServer(async (req, res) => {
       try { sel = JSON.parse(body.selected || '[]'); } catch (e) {}
       sendJson(res, 200, {
         status: 'done',
-        message: `[SwalAlert_Success] Đã đăng ký thành công ${sel.length} môn học!`,
-        MessDoneAct: `Hệ thống đã ghi nhận đăng ký thành công: ${sel.map(s => s.ten_mon + ' (' + s.ma_mon + ')').join(', ')}.`,
-        message_noti: `<span class="text-success"><b>[ĐĂNG KÝ THÀNH CÔNG]</b> ${sel.map(s => s.ma_mon + ' - ' + s.ten_mon).join('; ')}</span>`
+        message: `[SwalAlert_Success] ÄÃ£ Ä‘Äƒng kÃ½ thÃ nh cÃ´ng ${sel.length} mÃ´n há»c!`,
+        MessDoneAct: `Há»‡ thá»‘ng Ä‘Ã£ ghi nháº­n Ä‘Äƒng kÃ½ thÃ nh cÃ´ng: ${sel.map(s => s.ten_mon + ' (' + s.ma_mon + ')').join(', ')}.`,
+        message_noti: `<span class="text-success"><b>[ÄÄ‚NG KÃ THÃ€NH CÃ”NG]</b> ${sel.map(s => s.ma_mon + ' - ' + s.ten_mon).join('; ')}</span>`
       });
       return;
     }
@@ -428,7 +428,7 @@ const server = http.createServer(async (req, res) => {
     if (schoolCode !== 'BDU') {
       bduTemplate = bduTemplate
         .replace(/BDU/g, schoolCode)
-        .replace(/Đại học Bình Dương/gi, `Trường Đại học (${schoolCode})`);
+        .replace(/Äáº¡i há»c BÃ¬nh DÆ°Æ¡ng/gi, `TrÆ°á»ng Äáº¡i há»c (${schoolCode})`);
     }
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(bduTemplate);
@@ -453,10 +453,11 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log(`================================================================`);
-  console.log(`🚀 DKMH.NET + TOOLS1S.COM 1:1 Clone Server is running!`);
-  console.log(`👉 Landing Page (#tool): http://localhost:${PORT}/#tool`);
-  console.log(`👉 Contact Page:         http://localhost:${PORT}/contact`);
-  console.log(`👉 Tool HCMUTE (Cookie): http://localhost:${PORT}/dkmh/`);
-  console.log(`👉 Tool BDU/EdusoftWeb:  http://localhost:${PORT}/dkmh-bdu/`);
+  console.log(`ðŸš€ DKMH.NET + TOOLS1S.COM 1:1 Clone Server is running!`);
+  console.log(`ðŸ‘‰ Landing Page (#tool): http://localhost:${PORT}/#tool`);
+  console.log(`ðŸ‘‰ Contact Page:         http://localhost:${PORT}/contact`);
+  console.log(`ðŸ‘‰ Tool HCMUTE (Cookie): http://localhost:${PORT}/dkmh/`);
+  console.log(`ðŸ‘‰ Tool BDU/EdusoftWeb:  http://localhost:${PORT}/dkmh-bdu/`);
   console.log(`================================================================`);
 });
+

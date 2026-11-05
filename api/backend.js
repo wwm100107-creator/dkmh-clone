@@ -87,7 +87,9 @@ module.exports = async (req, res) => {
 
   // 2. Dynamic school portal page (/dkmh-<school>)
   if (route === 'school_page') {
-    const bduPath = path.join(process.cwd(), 'dkmh-bdu', 'index.html');
+    const p1 = path.join(__dirname, '..', 'dkmh-bdu', 'index.html');
+    const p2 = path.join(process.cwd(), 'dkmh-bdu', 'index.html');
+    const bduPath = fs.existsSync(p1) ? p1 : p2;
     let html = fs.existsSync(bduPath) ? fs.readFileSync(bduPath, 'utf8') : '<h1>DKMH Tool</h1>';
     if (schoolParam !== 'BDU') {
       html = html
