@@ -1,0 +1,472 @@
+
+@media (min-width:576px) {
+  .form-inline label {
+    -webkit-box-pack:center;
+    justify-content:center;
+  }
+  /*
+  
+  .form-inline .form-group,
+  .form-inline label {
+    display:-webkit-box;
+    display:flex;
+    -webkit-box-align:center;
+    align-items:center;
+    margin-bottom:0;
+  }
+  .form-inline .form-group {
+    -webkit-box-flex:0;
+    flex:0 0 auto;
+    -webkit-box-orient:horizontal;
+    -webkit-box-direction:normal;
+    flex-flow:row wrap;
+  }
+  .form-inline .form-control {
+    display:inline-block;
+    width:auto;
+    vertical-align:middle;
+  }*/
+  .form-inline .form-control-plaintext {
+    display:inline-block;
+  }
+  .form-inline .custom-select,
+  .form-inline .input-groupc {
+    width:auto;
+  }
+  .form-inline .form-check {
+    display:-webkit-box;
+    display:flex;
+    -webkit-box-align:center;
+    align-items:center;
+    -webkit-box-pack:center;
+    justify-content:center;
+    width:auto;
+    padding-left:0;
+  }
+  .form-inline .form-check-input {
+    position:relative;
+    flex-shrink:0;
+    margin-top:0;
+    margin-right:.25rem;
+    margin-left:0;
+  }
+  .form-inline .custom-control {
+    -webkit-box-align:center;
+    align-items:center;
+    -webkit-box-pack:center;
+    justify-content:center;
+  }
+  .form-inline .custom-control-label {
+    margin-bottom:0;
+  }
+}
+.btn-toolbar .input-groupc {
+  width:auto;
+}
+  
+
+.input-groupc {
+  position:relative;
+  display:-webkit-box;
+  display:flex;
+  flex-wrap:wrap;
+  -webkit-box-align:stretch;
+  align-items:stretch;
+  width:100%;
+}
+
+.input-groupc>.custom-file,
+.input-groupc>.custom-select,
+.input-groupc>.form-control,
+.input-groupc>.form-control-plaintext {
+  position:relative;
+  -webkit-box-flex:1;
+  flex:1 1 auto;
+  width:1%;
+  margin-bottom:0;
+}
+
+.input-groupc>.custom-file+.custom-file,
+.input-groupc>.custom-file+.custom-select,
+.input-groupc>.custom-file+.form-control,
+.input-groupc>.custom-select+.custom-file,
+.input-groupc>.custom-select+.custom-select,
+.input-groupc>.custom-select+.form-control,
+.input-groupc>.form-control+.custom-file,
+.input-groupc>.form-control+.custom-select,
+.input-groupc>.form-control+.form-control,
+.input-groupc>.form-control-plaintext+.custom-file,
+.input-groupc>.form-control-plaintext+.custom-select,
+.input-groupc>.form-control-plaintext+.form-control {
+  margin-left:-1px;
+}
+
+.input-groupc>.custom-file .custom-file-input:focus~.custom-file-label,
+.input-groupc>.custom-select:focus,
+.input-groupc>.form-control:focus {
+  z-index:3;
+}
+
+.input-groupc>.custom-file .custom-file-input:focus {
+  z-index:4;
+}
+
+.input-groupc>.custom-select:not(:last-child),
+.input-groupc>.form-control:not(:last-child) {
+  border-top-right-radius:0;
+  border-bottom-right-radius:0;
+}
+
+.input-groupc>.custom-select:not(:first-child),
+.input-groupc>.form-control:not(:first-child) {
+  border-top-left-radius:0;
+  border-bottom-left-radius:0;
+}
+
+.input-groupc>.custom-file {
+  display:-webkit-box;
+  display:flex;
+  -webkit-box-align:center;
+  align-items:center;
+}
+
+.input-groupc>.custom-file:not(:last-child) .custom-file-label,
+.input-groupc>.custom-file:not(:last-child) .custom-file-label:after {
+  border-top-right-radius:0;
+  border-bottom-right-radius:0;
+}
+
+.input-groupc>.custom-file:not(:first-child) .custom-file-label {
+  border-top-left-radius:0;
+  border-bottom-left-radius:0;
+}
+
+.input-groupc-append,
+.input-groupc-prepend {
+  display:-webkit-box;
+  display:flex;
+}
+
+.fc-unthemed .input-groupc-append .fc-button,
+.fc-unthemed .input-groupc-prepend .fc-button,
+.input-groupc-append .btn,
+.input-groupc-append .fc-unthemed .fc-button,
+.input-groupc-prepend .btn,
+.input-groupc-prepend .fc-unthemed .fc-button {
+  position:relative;
+  z-index:2;
+}
+
+.fc-unthemed .input-groupc-append .fc-button:focus,
+.fc-unthemed .input-groupc-prepend .fc-button:focus,
+.input-groupc-append .btn:focus,
+.input-groupc-append .fc-unthemed .fc-button:focus,
+.input-groupc-prepend .btn:focus,
+.input-groupc-prepend .fc-unthemed .fc-button:focus {
+  z-index:3;
+}
+
+.fc-unthemed .input-groupc-append .btn+.fc-button,
+.fc-unthemed .input-groupc-append .fc-button+.btn,
+.fc-unthemed .input-groupc-append .fc-button+.fc-button,
+.fc-unthemed .input-groupc-append .fc-button+.input-groupc-text,
+.fc-unthemed .input-groupc-append .input-groupc-text+.fc-button,
+.fc-unthemed .input-groupc-prepend .btn+.fc-button,
+.fc-unthemed .input-groupc-prepend .fc-button+.btn,
+.fc-unthemed .input-groupc-prepend .fc-button+.fc-button,
+.fc-unthemed .input-groupc-prepend .fc-button+.input-groupc-text,
+.fc-unthemed .input-groupc-prepend .input-groupc-text+.fc-button,
+.input-groupc-append .btn+.btn,
+.input-groupc-append .btn+.input-groupc-text,
+.input-groupc-append .fc-unthemed .btn+.fc-button,
+.input-groupc-append .fc-unthemed .fc-button+.btn,
+.input-groupc-append .fc-unthemed .fc-button+.fc-button,
+.input-groupc-append .fc-unthemed .fc-button+.input-groupc-text,
+.input-groupc-append .fc-unthemed .input-groupc-text+.fc-button,
+.input-groupc-append .input-groupc-text+.btn,
+.input-groupc-append .input-groupc-text+.input-groupc-text,
+.input-groupc-prepend .btn+.btn,
+.input-groupc-prepend .btn+.input-groupc-text,
+.input-groupc-prepend .fc-unthemed .btn+.fc-button,
+.input-groupc-prepend .fc-unthemed .fc-button+.btn,
+.input-groupc-prepend .fc-unthemed .fc-button+.fc-button,
+.input-groupc-prepend .fc-unthemed .fc-button+.input-groupc-text,
+.input-groupc-prepend .fc-unthemed .input-groupc-text+.fc-button,
+.input-groupc-prepend .input-groupc-text+.btn,
+.input-groupc-prepend .input-groupc-text+.input-groupc-text {
+  margin-left:-1px;
+}
+
+.input-groupc-prepend {
+  margin-right:-1px;
+}
+
+.input-groupc-append {
+  margin-left:-1px;
+}
+
+.input-groupc-text {
+  display:-webkit-box;
+  display:flex;
+  -webkit-box-align:center;
+  align-items:center;
+  padding:.25rem .7rem;
+  margin-bottom:0;
+  font-size:.875rem;
+  font-weight:400;
+  line-height:1.5;
+  color:#495057;
+  text-align:center;
+  white-space:nowrap;
+  background-color:#e9ecef;
+  border:1px solid #ced4da;
+  border-radius:.2rem;
+}
+
+.input-groupc-text input[type=checkbox],
+.input-groupc-text input[type=radio] {
+  margin-top:0;
+}
+
+.input-groupc-lg>.custom-select,
+.input-groupc-lg>.form-control:not(textarea) {
+  height:calc(2.2rem + 2px);
+}
+
+.fc-unthemed .input-groupc-lg>.input-groupc-append>.fc-button,
+.fc-unthemed .input-groupc-lg>.input-groupc-prepend>.fc-button,
+.input-groupc-lg>.custom-select,
+.input-groupc-lg>.form-control,
+.input-groupc-lg>.input-groupc-append>.btn,
+.input-groupc-lg>.input-groupc-append>.input-groupc-text,
+.input-groupc-lg>.input-groupc-prepend>.btn,
+.input-groupc-lg>.input-groupc-prepend>.input-groupc-text {
+  padding:.35rem 1rem;
+  font-size:1rem;
+  line-height:1.5;
+  border-radius:.3rem;
+}
+
+.input-groupc-sm>.custom-select,
+.input-groupc-sm>.form-control:not(textarea) {
+  height:calc(1.425rem + 2px);
+}
+
+.fc-unthemed .input-groupc-sm>.input-groupc-append>.fc-button,
+.fc-unthemed .input-groupc-sm>.input-groupc-prepend>.fc-button,
+.input-groupc-sm>.custom-select,
+.input-groupc-sm>.form-control,
+.input-groupc-sm>.input-groupc-append>.btn,
+.input-groupc-sm>.input-groupc-append>.input-groupc-text,
+.input-groupc-sm>.input-groupc-prepend>.btn,
+.input-groupc-sm>.input-groupc-prepend>.input-groupc-text {
+  padding:.15rem .5rem;
+  font-size:.75rem;
+  line-height:1.5;
+  border-radius:.1rem;
+}
+
+.input-groupc-lg>.custom-select,
+.input-groupc-sm>.custom-select {
+  padding-right:1.7rem;
+}
+
+.fc-unthemed .input-groupc>.input-groupc-append:last-child>.fc-button:not(:last-child):not(.dropdown-toggle),
+.fc-unthemed .input-groupc>.input-groupc-append:not(:last-child)>.fc-button,
+.fc-unthemed .input-groupc>.input-groupc-prepend>.fc-button,
+.input-groupc>.input-groupc-append:last-child>.btn:not(:last-child):not(.dropdown-toggle),
+.input-groupc>.input-groupc-append:last-child>.input-groupc-text:not(:last-child),
+.input-groupc>.input-groupc-append:not(:last-child)>.btn,
+.input-groupc>.input-groupc-append:not(:last-child)>.input-groupc-text,
+.input-groupc>.input-groupc-prepend>.btn,
+.input-groupc>.input-groupc-prepend>.input-groupc-text {
+  border-top-right-radius:0;
+  border-bottom-right-radius:0;
+}
+
+.fc-unthemed .input-groupc>.input-groupc-append>.fc-button,
+.fc-unthemed .input-groupc>.input-groupc-prepend:first-child>.fc-button:not(:first-child),
+.fc-unthemed .input-groupc>.input-groupc-prepend:not(:first-child)>.fc-button,
+.input-groupc>.input-groupc-append>.btn,
+.input-groupc>.input-groupc-append>.input-groupc-text,
+.input-groupc>.input-groupc-prepend:first-child>.btn:not(:first-child),
+.input-groupc>.input-groupc-prepend:first-child>.input-groupc-text:not(:first-child),
+.input-groupc>.input-groupc-prepend:not(:first-child)>.btn,
+.input-groupc>.input-groupc-prepend:not(:first-child)>.input-groupc-text {
+  border-top-left-radius:0;
+  border-bottom-left-radius:0;
+}
+
+.input-groupc [data-toggle=datetimepicker] {
+  cursor:pointer;
+}
+
+.form-group-sm .select2-container--bootstrap4 .select2-selection--single,
+.input-groupc-sm .select2-container--bootstrap4 .select2-selection--single,
+.select2-container--bootstrap4 .select2-selection--single.input-sm {
+  border-radius:.1rem;
+  font-size:.75rem;
+  height:calc(1.425rem + 2px);
+  line-height:1;
+  padding:.5rem .9rem .5rem .15rem;
+}
+
+.form-group-sm .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b,
+.input-groupc-sm .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b,
+.select2-container--bootstrap4 .select2-selection--single.input-sm .select2-selection__arrow b {
+  margin-left:-.5rem;
+}
+
+.form-group-sm .select2-container--bootstrap4 .select2-selection--multiple,
+.input-groupc-sm .select2-container--bootstrap4 .select2-selection--multiple,
+.select2-container--bootstrap4 .select2-selection--multiple.input-sm {
+  min-height:calc(1.425rem + 2px);
+  border-radius:.1rem;
+}
+
+.form-group-sm .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__rendered,
+.input-groupc-sm .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__rendered,
+.select2-container--bootstrap4 .select2-selection--multiple.input-sm .select2-selection__rendered {
+  padding:.5rem .15rem 0 .5rem;
+}
+
+.form-group-sm .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__choice,
+.input-groupc-sm .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__choice,
+.select2-container--bootstrap4 .select2-selection--multiple.input-sm .select2-selection__choice {
+  font-size:.75rem;
+  line-height:1;
+  margin:0 0 0 .075rem;
+  padding:0 .5rem;
+}
+
+.form-group-sm .select2-container--bootstrap4 .select2-selection--multiple .select2-search--inline .select2-search__field,
+.input-groupc-sm .select2-container--bootstrap4 .select2-selection--multiple .select2-search--inline .select2-search__field,
+.select2-container--bootstrap4 .select2-selection--multiple.input-sm .select2-search--inline .select2-search__field {
+  padding:0 .15rem;
+  font-size:.75rem;
+  height:calc(1.425rem + 2px)-2;
+  line-height:1;
+}
+
+.form-group-sm .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__clear,
+.input-groupc-sm .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__clear,
+.select2-container--bootstrap4 .select2-selection--multiple.input-sm .select2-selection__clear {
+  margin-top:.5rem;
+}
+
+.form-group-lg .select2-container--bootstrap4 .select2-selection--single,
+.input-groupc-lg .select2-container--bootstrap4 .select2-selection--single,
+.select2-container--bootstrap4 .select2-selection--single.input-lg {
+  border-radius:.3rem;
+  font-size:1rem;
+  height:calc(2.2rem + 2px);
+  line-height:1;
+  padding:1rem 1.2875rem 1rem .35rem;
+}
+
+.form-group-lg .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow,
+.input-groupc-lg .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow,
+.select2-container--bootstrap4 .select2-selection--single.input-lg .select2-selection__arrow {
+  width:.3125rem;
+}
+
+.form-group-lg .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b,
+.input-groupc-lg .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b,
+.select2-container--bootstrap4 .select2-selection--single.input-lg .select2-selection__arrow b {
+  border-width:.3125rem .3125rem 0;
+  margin-left:-1rem;
+  margin-top:-.15625rem;
+}
+
+.form-group-lg .select2-container--bootstrap4 .select2-selection--multiple,
+.input-groupc-lg .select2-container--bootstrap4 .select2-selection--multiple,
+.select2-container--bootstrap4 .select2-selection--multiple.input-lg {
+  min-height:calc(2.2rem + 2px);
+  border-radius:.3rem;
+}
+
+.form-group-lg .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__choice,
+.input-groupc-lg .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__choice,
+.select2-container--bootstrap4 .select2-selection--multiple.input-lg .select2-selection__choice {
+  font-size:1rem;
+  line-height:1;
+  border-radius:.2rem;
+  margin:0 0 0 .175rem;
+  padding:0 1rem;
+}
+
+.form-group-lg .select2-container--bootstrap4 .select2-selection--multiple .select2-search--inline .select2-search__field,
+.input-groupc-lg .select2-container--bootstrap4 .select2-selection--multiple .select2-search--inline .select2-search__field,
+.select2-container--bootstrap4 .select2-selection--multiple.input-lg .select2-search--inline .select2-search__field {
+  padding:0 .35rem;
+  font-size:1rem;
+  height:calc(2.2rem + 2px)-2;
+  line-height:1;
+}
+
+.form-group-lg .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__clear,
+.input-groupc-lg .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__clear,
+.select2-container--bootstrap4 .select2-selection--multiple.input-lg .select2-selection__clear {
+  margin-top:1rem;
+}
+
+.input-groupc-lg .select2-container--bootstrap4 .select2-selection.select2-container--open .select2-selection--single .select2-selection__arrow b,
+.select2-container--bootstrap4 .select2-selection.input-lg.select2-container--open .select2-selection--single .select2-selection__arrow b {
+  border-color:transparent transparent #6c757d;
+  border-width:0 .3125rem .3125rem;
+}
+
+.input-groupc>.select2-hidden-accessible:first-child+.select2-container--bootstrap4>.selection>.select2-selection,
+.input-groupc>.select2-hidden-accessible:first-child+.select2-container--bootstrap4>.selection>.select2-selection.form-control {
+  border-top-right-radius:0;
+  border-bottom-right-radius:0;
+}
+
+.input-groupc>.select2-hidden-accessible:not(:first-child)+.select2-container--bootstrap4:not(:last-child)>.selection>.select2-selection,
+.input-groupc>.select2-hidden-accessible:not(:first-child)+.select2-container--bootstrap4:not(:last-child)>.selection>.select2-selection.form-control {
+  border-radius:0;
+}
+
+.input-groupc>.select2-hidden-accessible:not(:first-child):not(:last-child)+.select2-container--bootstrap4:last-child>.selection>.select2-selection,
+.input-groupc>.select2-hidden-accessible:not(:first-child):not(:last-child)+.select2-container--bootstrap4:last-child>.selection>.select2-selection.form-control {
+  border-top-left-radius:0;
+  border-bottom-left-radius:0;
+}
+
+.input-groupc>.select2-container--bootstrap4 {
+  display:table;
+  table-layout:fixed;
+  position:relative;
+  z-index:2;
+  width:100%;
+  margin-bottom:0;
+}
+
+.input-groupc>.select2-container--bootstrap4>.selection>.select2-selection.form-control {
+  float:none;
+}
+
+.input-groupc>.select2-container--bootstrap4.select2-container--focus,
+.input-groupc>.select2-container--bootstrap4.select2-container--open {
+  z-index:3;
+}
+
+.fc-unthemed .input-groupc>.select2-container--bootstrap4 .input-groupc-btn .fc-button,
+.input-groupc>.select2-container--bootstrap4,
+.input-groupc>.select2-container--bootstrap4 .input-groupc-btn,
+.input-groupc>.select2-container--bootstrap4 .input-groupc-btn .btn,
+.input-groupc>.select2-container--bootstrap4 .input-groupc-btn .fc-unthemed .fc-button {
+  vertical-align:top;
+}
+
+#chat_data {
+  height: 239px;
+  overflow-y: scroll;
+}
+#chat_data>p {
+  margin: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+
+/*{ padding:0; margin:0; outline:none; list-style:none; border: 0 none;}

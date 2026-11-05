@@ -1,0 +1,60 @@
+
+/* fix swal */
+.swal2-popup {
+    font-size: 1.5rem !important;
+}
+/*
+.swal2-icon {
+  width: 5em !important;
+  height: 5em !important;
+  border-width: .25em !important;
+}
+*/
+
+/* hide recaptcha */
+.grecaptcha-badge{
+    width:0 !important;
+}
+
+.grecaptcha-badge.show{
+    width:256px !important; 
+}
+
+
+/* Sửa lại để badge có màu nền tương ứng */
+.badge-success {
+    color: #fff;  /* Màu chữ trắng */
+    background-color: #5cb85c;  /* Màu nền xanh */
+    border-color: #4cae4c
+}
+
+.badge-warning {
+    color: #fff;  /* Màu chữ trắng */
+    background-color: #f0ad4e;  /* Màu nền vàng */
+    border-color: #eea236
+}
+
+.badge-danger {
+    color: #fff;  /* Màu chữ trắng */
+    background-color: #d9534f;  /* Màu nền đỏ */
+    border-color: #d43f3a
+}
+
+.badge-info {
+    color: #fff;  /* Màu chữ trắng */
+    background-color: #5bc0de;  /* Màu nền xanh dương */
+    border-color: #46b8da
+}
+
+.badge-primary {
+    color: #fff;  /* Màu chữ trắng */
+    background-color: #337ab7;  /* Màu nền xanh dương */
+    border-color: #2e6da4
+}
+
+
+.badge-tim {
+    color: #fff;  /* Màu chữ trắng */
+    background-color: #7261ED;  
+    border-color: #6B5BE1
+}

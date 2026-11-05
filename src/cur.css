@@ -1,0 +1,15 @@
+::-webkit-scrollbar{
+	background:silver;
+	width:10px;height:10px;
+	border-radius:5px;
+}
+::-webkit-scrollbar-thumb {
+	background:#333;
+	border-radius:5px;
+}
+body{
+	cursor: url('cur/arrow.cur'), auto;
+}
+a:hover,input:hover,select:hover,button:hover{
+	cursor: url('cur/hover.cur'), auto;
+}

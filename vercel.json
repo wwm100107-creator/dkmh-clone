@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "functions": {
+    "api/backend.js": {
+      "includeFiles": "dkmh-bdu/index.html"
+    }
+  },
+  "rewrites": [
+    { "source": "/contact/process.php", "destination": "/api/backend?route=contact_process" },
+    { "source": "/process.php", "destination": "/api/backend?route=contact_process" },
+    { "source": "/api", "destination": "/api/backend?route=buy_credits" },
+    { "source": "/api/", "destination": "/api/backend?route=buy_credits" },
+    { "source": "/dkmh/process.php", "destination": "/api/backend?route=dkmh_process" },
+    { "source": "/dkmh/index.php", "destination": "/api/backend?route=heartbeat" },
+    { "source": "/dkmh-:school/index.php", "destination": "/api/backend?route=heartbeat&school=:school" },
+    { "source": "/dkmh-:school/api.php", "destination": "/api/backend?route=school_api&school=:school" },
+    { "source": "/dkmh-:school", "destination": "/api/backend?route=school_page&school=:school" },
+    { "source": "/dkmh-:school/", "destination": "/api/backend?route=school_page&school=:school" },
+    { "source": "/bootstrap/css/bootstrap.min.css", "destination": "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" },
+    { "source": "/dist/css/AdminLTE.min.css", "destination": "https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.18/css/AdminLTE.min.css" },
+    { "source": "/src/animate.css", "destination": "/assets/css/animate.css" },
+    { "source": "/images/dkmh-aqv1/:icon", "destination": "/api/backend?route=aqv1_icon" }
+  ]
+}
