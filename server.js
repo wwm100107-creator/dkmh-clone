@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const querystring = require('querystring');
 
 const PORT = process.env.PORT || 3000;
-const ROOT = path.join(__dirname, '..');
+const ROOT = __dirname;
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -460,4 +460,5 @@ server.listen(PORT, () => {
   console.log(`ðŸ‘‰ Tool BDU/EdusoftWeb:  http://localhost:${PORT}/dkmh-bdu/`);
   console.log(`================================================================`);
 });
+
 

@@ -2,7 +2,8 @@
   "name": "dkmh-clone",
   "version": "1.0.0",
   "description": "1:1 Clone of dkmh.net/#tool, dkmh.net/contact, and tools1s.com/dkmh* reconstructed via REA (Reverse Engineer Anything)",
+  "main": "server.js",
   "scripts": {
-    "start": "node scripts/local-server.js"
+    "start": "node server.js"
   }
 }
