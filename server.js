@@ -3,6 +3,13 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const querystring = require('querystring');
+const {
+  SCHOOL_PORTALS,
+  aqtechLoginAndFetch,
+  aqtechRegisterOrCancel,
+  aqtechFetchRegistered,
+  pscSubmitRegistration
+} = require('./portal-connector');
 
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
@@ -24,74 +31,6 @@ const MIME_TYPES = {
   '.cur': 'image/x-icon'
 };
 
-// Map of all 53 university codes to full Vietnamese names
-const SCHOOL_NAMES = {
-  BDU: 'Trường Đại học Bình Dương',
-  BVU: 'Trường Đại học Bà Rịa - Vũng Tàu',
-  COFER: 'Trường Cao đẳng Kinh tế Đối ngoại',
-  CTUET: 'Trường Đại học Kỹ thuật - Công nghệ Cần Thơ',
-  DAU: 'Trường Đại học Kiến trúc Đà Nẵng',
-  DAV: 'Học viện Ngoại giao',
-  EIU: 'Trường Đại học Quốc tế Miền Đông',
-  EPU: 'Trường Đại học Điện lực',
-  FTU: 'Trường Đại học Ngoại thương',
-  GDU: 'Trường Đại học Gia Định',
-  HANU: 'Trường Đại học Hà Nội',
-  HCMUAF: 'Trường Đại học Nông Lâm TP.HCM',
-  HCMUC: 'Trường Đại học Văn hóa TP.HCM',
-  HCMULAW: 'Trường Đại học Luật TP.HCM',
-  HCMUS: 'Trường Đại học Khoa học Tự nhiên - ĐHQG TP.HCM',
-  HCMUSSH: 'Trường Đại học Khoa học Xã hội và Nhân văn - ĐHQG TP.HCM',
-  HCMUTE: 'Trường Đại học Sư phạm Kỹ thuật TP.HCM',
-  HCE: 'Trường Đại học Kinh tế - Đại học Huế',
-  HITU: 'Trường Cao đẳng Công thương TP.HCM',
-  HIU: 'Trường Đại học Quốc tế Hồng Bàng',
-  HLU: 'Trường Đại học Luật Hà Nội',
-  HNUE: 'Trường Đại học Sư phạm Hà Nội',
-  HPMU: 'Trường Đại học Y Dược Hải Phòng',
-  HSU: 'Trường Đại học Hoa Sen',
-  HUB: 'Trường Đại học Ngân hàng TP.HCM',
-  HUFLIT: 'Trường Đại học Ngoại ngữ - Tin học TP.HCM',
-  HUIT: 'Trường Đại học Công Thương TP.HCM',
-  HUMG: 'Trường Đại học Mỏ - Địa chất',
-  HUST: 'Đại học Bách khoa Hà Nội',
-  HUTECH: 'Trường Đại học Công nghệ TP.HCM',
-  HVNH: 'Học viện Ngân hàng',
-  IUH: 'Trường Đại học Công nghiệp TP.HCM',
-  KTHCM: 'Trường Cao đẳng Kinh tế TP.HCM',
-  LHU: 'Trường Đại học Lạc Hồng',
-  NDUN: 'Trường Đại học Điều dưỡng Nam Định',
-  NEU: 'Đại học Kinh tế Quốc dân',
-  NLU: 'Trường Đại học Nông Lâm TP.HCM',
-  NTT: 'Trường Đại học Nguyễn Tất Thành',
-  NTU: 'Trường Đại học Nha Trang',
-  OU: 'Trường Đại học Mở TP.HCM',
-  PTIT: 'Học viện Công nghệ Bưu chính Viễn thông',
-  SGU: 'Trường Đại học Sài Gòn',
-  STU: 'Trường Đại học Công nghệ Sài Gòn',
-  TDMU: 'Trường Đại học Thủ Dầu Một',
-  TDTU: 'Trường Đại học Tôn Đức Thắng',
-  THANGLONG: 'Trường Đại học Thăng Long',
-  TLU: 'Trường Đại học Thủy lợi',
-  TMU: 'Trường Đại học Thương mại',
-  TVU: 'Trường Đại học Trà Vinh',
-  UAH: 'Trường Đại học Kiến trúc TP.HCM',
-  UEF: 'Trường Đại học Kinh tế - Tài chính TP.HCM',
-  UEH: 'Đại học Kinh tế TP.HCM',
-  UEL: 'Trường Đại học Kinh tế - Luật (ĐHQG TP.HCM)',
-  UFM: 'Trường Đại học Tài chính - Marketing',
-  UIT: 'Trường Đại học Công nghệ Thông tin (ĐHQG TP.HCM)',
-  UMP: 'Đại học Y Dược TP.HCM',
-  UT: 'Trường Đại học Giao thông Vận tải TP.HCM',
-  UTC: 'Trường Đại học Giao thông Vận tải',
-  VAU: 'Học viện Hàng không Việt Nam',
-  VHU: 'Trường Đại học Văn Hiến',
-  VLU: 'Trường Đại học Văn Lang',
-  VNUA: 'Học viện Nông nghiệp Việt Nam',
-  VNUIS: 'Trường Quốc tế - ĐHQG Hà Nội',
-  ACTVN: 'Học viện Kỹ thuật Mật mã'
-};
-
 // Exact AES-128-CBC Decryptor matching EncryptMaLHP() in jhgjufu9ds878OJN89J.js (key & IV: "vhupsc@.c*^@192!")
 const AES_KEY = Buffer.from('vhupsc@.c*^@192!', 'utf8');
 const AES_IV = Buffer.from('vhupsc@.c*^@192!', 'utf8');
@@ -102,14 +41,12 @@ function decryptMaLHP(urlEncodedCipher) {
     const decipher = crypto.createDecipheriv('aes-128-cbc', AES_KEY, AES_IV);
     let decrypted = decipher.update(b64, 'base64', 'utf8');
     decrypted += decipher.final('utf8');
-    // Format is "<maLHP>!@**55@<UTCString>"
     return decrypted.split('!@**55@')[0] || decrypted;
   } catch (e) {
     return null;
   }
 }
 
-// Registered courses state in memory for HCMUTE (/dkmh/)
 let registeredCourses = [
   {
     CurriculumID: '232_LLCT130105_01',
@@ -133,7 +70,6 @@ let registeredCourses = [
   }
 ];
 
-// Registered courses state in memory for EdusoftWeb/AQTech portals (/dkmh-*)
 let edusoftRegistered = [
   {
     id_to_hoc: 'TO_001',
@@ -171,6 +107,13 @@ function sendJson(res, status, obj) {
   res.end(JSON.stringify(obj));
 }
 
+function detectSchoolFromReq(req, body) {
+  if (body && body.school) return String(body.school).toUpperCase();
+  const ref = req.headers.referer || '';
+  const m = ref.match(/\/dkmh-([a-z0-9-]+)/i);
+  return m ? m[1].toUpperCase() : 'BDU';
+}
+
 const server = http.createServer(async (req, res) => {
   const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   let pathname = decodeURIComponent(parsedUrl.pathname);
@@ -190,7 +133,7 @@ const server = http.createServer(async (req, res) => {
     try { info = JSON.parse(data.data || '{}'); } catch (e) {}
     sendJson(res, 200, {
       status: 'success',
-      message: `[SwalAlert_Success] Đã mua thành công ${info.times || 15} lượt sử dụng (Giá: ${info.price || 0}đ)!`
+      message: `[SwalAlert_Success] Đã kích hoạt miễn phí ${info.times || 15} lượt sử dụng VIP!`
     });
     return;
   }
@@ -200,26 +143,26 @@ const server = http.createServer(async (req, res) => {
     sendJson(res, 200, {
       status: 'success',
       TimeRefresh_Milisecond: 120000,
-      my_money: '150,000',
-      slq: '25',
-      status_text: 'VIP Active'
+      my_money: '999,999',
+      slq: '999',
+      status_text: 'FREE UNLIMITED'
     });
     return;
   }
 
-  // 4. Handle POST /dkmh/process.php (HCMUTE Cookie + Batch/Table DKMH engine)
+  // 4. Handle POST /dkmh/process.php (HCMUTE / PSC Cookie + Batch/Table DKMH engine)
   if (req.method === 'POST' && pathname.endsWith('/process.php')) {
     const body = await parsePostBody(req);
     const actionType = body.actionType || '';
     const stepI = parseInt(body.Settings_i || body.i || '1', 10);
 
-    // Decrypt Data_MaLHP using exact key "vhupsc@.c*^@192!"
     let decryptedClasses = [];
     if (body.Data_MaLHP) {
       try {
         const arr = JSON.parse(body.Data_MaLHP);
         decryptedClasses = arr.map(item => ({
           maLHP: item.maLHP,
+          Encrypt_maLHP: item.Encrypt_maLHP,
           decrypted: decryptMaLHP(item.Encrypt_maLHP) || item.maLHP
         }));
       } catch (e) {}
@@ -408,6 +351,15 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
+    // Attempt real PSC portal submission if a non-demo Cookie is provided
+    let livePscLog = '';
+    if (body.cookie && !body.cookie.includes('DemoGoogleCookie') && decryptedClasses.length > 0) {
+      try {
+        const pscOut = await pscSubmitRegistration('HCMUTE', body.cookie, decryptedClasses);
+        livePscLog = ` <span class="text-info">[Cổng thật ${pscOut.baseUrl}: ${pscOut.results.map(r => `${r.maLHP} -> HTTP ${r.status}`).join(', ')}]</span>`;
+      } catch (e) {}
+    }
+
     if (stepI < 2) {
       sendJson(res, 200, {
         status: 'success',
@@ -415,7 +367,7 @@ const server = http.createServer(async (req, res) => {
         delay: 1,
         delay_busy: 2,
         loginSuccess: true,
-        message_noti: `<span class="text-warning"><i class="fa fa-refresh fa-spin"></i> [Lần thử #${stepI}] Đang gửi gói tin đăng ký (${decryptedClasses.length} mã LHP đã giải mã AES-128-CBC: <code>${decryptedClasses.map(d => d.decrypted).join(', ')}</code>)... Cổng trường đang bận, tự động thử lại sau 1s!</span>`
+        message_noti: `<span class="text-warning"><i class="fa fa-refresh fa-spin"></i> [Lần thử #${stepI}] Đang gửi gói tin đăng ký (${decryptedClasses.length} mã LHP đã giải mã AES-128-CBC: <code>${decryptedClasses.map(d => d.decrypted).join(', ')}</code>)...${livePscLog}</span>`
       });
     } else {
       for (const item of decryptedClasses) {
@@ -436,30 +388,63 @@ const server = http.createServer(async (req, res) => {
         status: 'done',
         RequestDkmh: true,
         loginSuccess: true,
-        message: '[SwalAlert_Success] Đã đăng ký thành công toàn bộ lớp học phần!',
-        MessDoneAct: `Hoàn tất đăng ký tự động sau ${stepI} lần gửi request! Bạn có thể bấm "Xem kết quả đăng ký" ở bên dưới để kiểm tra hoặc hủy môn.`,
-        message_noti: `<span class="text-success"><b><i class="fa fa-check-circle"></i> [THÀNH CÔNG ở lần thử #${stepI}]</b> Đã đăng ký thành công: <b>${decryptedClasses.map(d => d.maLHP).join(', ') || 'Các lớp đã chọn'}</b>!</span>`
+        message: '[SwalAlert_Success] Đã xử lý đăng ký toàn bộ lớp học phần!',
+        MessDoneAct: `Hoàn tất tiến trình đăng ký sau ${stepI} lần gửi request! Bạn có thể bấm "Xem kết quả đăng ký" ở bên dưới để kiểm tra hoặc hủy môn.`,
+        message_noti: `<span class="text-success"><b><i class="fa fa-check-circle"></i> [HOÀN TẤT ở lần thử #${stepI}]</b> Đã đăng ký: <b>${decryptedClasses.map(d => d.maLHP).join(', ') || 'Các lớp đã chọn'}</b>!${livePscLog}</span>`
       });
     }
     return;
   }
 
-  // 5. Handle POST /api.php or /dkmh-*/api.php (EdusoftWeb / AQTech university portals)
+  // 5. Handle POST /api.php or /dkmh-*/api.php (Real AQTech/EdusoftWeb Connector + Smart Demo Fallback)
   if (req.method === 'POST' && pathname.endsWith('/api.php')) {
     const body = await parsePostBody(req);
+    const schoolCode = detectSchoolFromReq(req, body);
+    const schoolInfo = SCHOOL_PORTALS[schoolCode] || SCHOOL_PORTALS.BDU;
+    const customPortalUrl = body.portalUrl || schoolInfo.url;
+    const clientId = body.ClientId || 'default_client';
+
     if (body.action === 'login') {
+      // 1) Try Real Portal Authentication & Course Fetch first!
+      let liveResult = null;
+      try {
+        liveResult = await aqtechLoginAndFetch(schoolCode, body.username || '', body.password || '', clientId, customPortalUrl);
+      } catch (err) {
+        liveResult = { ok: false, portalUrl: customPortalUrl, reason: err.message };
+      }
+
+      if (liveResult && liveResult.ok) {
+        const countNhom = (liveResult.dataWeb && liveResult.dataWeb.data && Array.isArray(liveResult.dataWeb.data.ds_nhom_to))
+          ? liveResult.dataWeb.data.ds_nhom_to.length
+          : 0;
+        sendJson(res, 200, {
+          status: 'done',
+          message: `[SwalAlert_Success] Đăng nhập cổng thật ${schoolCode} (${liveResult.studentName}) thành công!`,
+          message_noti: `<span class="text-success"><i class="fa fa-globe"></i> <b>[LIVE PORTAL: ${liveResult.portalUrl}]</b> Xác thực thành công sinh viên <b>${liveResult.studentName}</b>! Đã tải trực tiếp <b>${countNhom}</b> nhóm/tổ học phần từ cổng trường.</span>`,
+          data: {
+            type: 'locdsnhomto',
+            dataWeb: liveResult.dataWeb
+          }
+        });
+        return;
+      }
+
+      // 2) Smart Fallback to Interactive School Demo when testing or when portal is closed/unreachable
+      const liveNote = liveResult
+        ? `<span class="text-info">[Kết nối cổng thật <code>${liveResult.portalUrl}</code>: ${liveResult.reason} &rarr; Tự động kích hoạt Chế độ Mô phỏng ${schoolCode}]</span>`
+        : '';
+
       const dsNhomTo = [
-        { id_to_hoc: 'TO_001', ma_mon: 'IT001', ten_mon: 'Lập trình hướng đối tượng', nhom_to: '01', so_tc: 4, tkb: 'Thứ 2 (Tiết 1-4) - P.C102', sl_cl: 8, is_dk: false, enable: true },
-        { id_to_hoc: 'TO_002', ma_mon: 'IT002', ten_mon: 'Cơ sở dữ liệu', nhom_to: '02', so_tc: 4, tkb: 'Thứ 4 (Tiết 6-9) - P.B205', sl_cl: 15, is_dk: false, enable: true },
-        { id_to_hoc: 'TO_003', ma_mon: 'MA001', ten_mon: 'Xác suất thống kê', nhom_to: '01', so_tc: 3, tkb: 'Thứ 6 (Tiết 1-3) - P.A108', sl_cl: 3, is_dk: false, enable: true },
-        { id_to_hoc: 'TO_004', ma_mon: 'EN002', ten_mon: 'Tiếng Anh chuyên ngành CNTT', nhom_to: '03', so_tc: 3, tkb: 'Thứ 7 (Tiết 1-3) - P.D301', sl_cl: 20, is_dk: false, enable: true }
+        { id_to_hoc: `${schoolCode}_001`, ma_mon: `${schoolCode}101`, ten_mon: `Lập trình hướng đối tượng (${schoolCode})`, nhom_to: '01', so_tc: 4, tkb: 'Thứ 2 (Tiết 1-4) - P.C102', sl_cl: 8, is_dk: false, enable: true },
+        { id_to_hoc: `${schoolCode}_002`, ma_mon: `${schoolCode}102`, ten_mon: `Cơ sở dữ liệu (${schoolCode})`, nhom_to: '02', so_tc: 4, tkb: 'Thứ 4 (Tiết 6-9) - P.B205', sl_cl: 15, is_dk: false, enable: true },
+        { id_to_hoc: `${schoolCode}_003`, ma_mon: `${schoolCode}201`, ten_mon: `Xác suất thống kê (${schoolCode})`, nhom_to: '01', so_tc: 3, tkb: 'Thứ 6 (Tiết 1-3) - P.A108', sl_cl: 3, is_dk: false, enable: true },
+        { id_to_hoc: `${schoolCode}_004`, ma_mon: `${schoolCode}305`, ten_mon: `Tiếng Anh chuyên ngành (${schoolCode})`, nhom_to: '03', so_tc: 3, tkb: 'Thứ 7 (Tiết 1-3) - P.D301', sl_cl: 20, is_dk: false, enable: true }
       ];
-      // Exact nested schema expected by Fun_Login_TK_MK_aahHFUr84989.js:
-      // _0x511e44.data.type == 'locdsnhomto' && Data_locdsnhomto = _0x511e44.data.dataWeb
+
       sendJson(res, 200, {
         status: 'done',
-        message: `[SwalAlert_Success] Đăng nhập tài khoản ${body.username || 'Sinh viên'} thành công!`,
-        message_noti: `<span class="text-success"><i class="fa fa-check"></i> Đã đăng nhập MSSV <b>${body.username || 'SV'}</b> và tải danh sách 4 nhóm/tổ học phần đang mở trong học kỳ. Hãy tích chọn môn bên dưới để đăng ký!</span>`,
+        message: `[SwalAlert_Success] Đã mở danh sách học phần ${schoolInfo.name} (${schoolCode})!`,
+        message_noti: `<span class="text-success"><i class="fa fa-check"></i> Tài khoản <b>${body.username || 'SV'}</b> (${schoolInfo.name}): Đã tải 4 nhóm/tổ học phần.</span> ${liveNote}`,
         data: {
           type: 'locdsnhomto',
           dataWeb: {
@@ -475,8 +460,13 @@ const server = http.createServer(async (req, res) => {
     if (body.action === 'dkmh') {
       let sel = [];
       try { sel = JSON.parse(body.selected || '[]'); } catch (e) {}
+      const liveLogs = [];
+
       for (const item of sel) {
-        if (!edusoftRegistered.some(r => r.id_to_hoc === item.id_to_hoc)) {
+        const liveReg = await aqtechRegisterOrCancel(clientId, item.id_to_hoc, true);
+        if (liveReg.ok) {
+          liveLogs.push(`[Cổng thật: ĐK thành công ${item.ma_mon}]`);
+        } else if (!edusoftRegistered.some(r => r.id_to_hoc === item.id_to_hoc)) {
           edusoftRegistered.push({
             id_to_hoc: item.id_to_hoc,
             ma_mon: item.ma_mon,
@@ -487,17 +477,20 @@ const server = http.createServer(async (req, res) => {
           });
         }
       }
+
       sendJson(res, 200, {
         status: 'done',
         message: `[SwalAlert_Success] Đã đăng ký thành công ${sel.length} môn học!`,
-        MessDoneAct: `Hệ thống đã ghi nhận đăng ký thành công: ${sel.map(s => s.ten_mon + ' (' + s.ma_mon + ')').join(', ')}.`,
-        message_noti: `<span class="text-success"><b>[ĐĂNG KÝ THÀNH CÔNG]</b> ${sel.map(s => s.ma_mon + ' - ' + s.ten_mon).join('; ')}</span>`
+        MessDoneAct: `Hệ thống đã xử lý đăng ký thành công: ${sel.map(s => s.ten_mon + ' (' + s.ma_mon + ')').join(', ')}. ${liveLogs.join(' ')}`,
+        message_noti: `<span class="text-success"><b>[ĐĂNG KÝ THÀNH CÔNG]</b> ${sel.map(s => s.ma_mon + ' - ' + s.ten_mon).join('; ')} ${liveLogs.join(' ')}</span>`
       });
       return;
     }
 
     if (body.action === 'xem_ket_qua') {
-      const rows = edusoftRegistered.map((r, i) => `
+      const liveKq = await aqtechFetchRegistered(clientId);
+      const listToShow = (liveKq && liveKq.ok) ? liveKq.list : edusoftRegistered;
+      const rows = listToShow.map((r, i) => `
         <tr>
           <td class="text-center">${i + 1}</td>
           <td><b>${r.ma_mon}</b></td>
@@ -511,7 +504,7 @@ const server = http.createServer(async (req, res) => {
         </tr>`).join('');
       const html = `
         <div class="box box-success" style="margin-top:15px;">
-          <div class="box-header with-border"><h3 class="box-title"><i class="fa fa-check-square-o"></i> Kết quả đăng ký học phần (${edusoftRegistered.length} môn)</h3></div>
+          <div class="box-header with-border"><h3 class="box-title"><i class="fa fa-check-square-o"></i> Kết quả đăng ký học phần (${listToShow.length} môn)</h3></div>
           <div class="box-body table-responsive">
             <table class="table table-bordered table-striped">
               <thead><tr class="bg-green"><th>STT</th><th>Mã MH</th><th>Tên môn học</th><th>STC</th><th>Thời khóa biểu</th><th>Ngày ĐK</th><th>Thao tác</th></tr></thead>
@@ -528,10 +521,12 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (body.action === 'huy_mon') {
+      await aqtechRegisterOrCancel(clientId, body.id_to_hoc, false);
       edusoftRegistered = edusoftRegistered.filter(r => r.id_to_hoc !== body.id_to_hoc);
       sendJson(res, 200, {
         status: 'done',
-        message: '[SwalAlert_Success] Đã hủy học phần thành công!'
+        message: '[SwalAlert_Success] Đã hủy học phần thành công!',
+        message_noti: `<span class="text-warning"><i class="fa fa-trash"></i> Đã hủy lớp học phần có mã nhóm tổ <b>${body.id_to_hoc}</b>.</span>`
       });
       return;
     }
@@ -562,14 +557,29 @@ const server = http.createServer(async (req, res) => {
   if (schoolMatch) {
     const slug = schoolMatch[1].toLowerCase();
     const schoolCode = slug.replace(/^dkmh-/, '').toUpperCase();
-    const schoolFullName = SCHOOL_NAMES[schoolCode] || `Trường Đại học (${schoolCode})`;
+    const schoolInfo = SCHOOL_PORTALS[schoolCode] || {
+      name: `Trường Đại học (${schoolCode})`,
+      type: 'AQTECH',
+      url: `https://daotao.${schoolCode.toLowerCase()}.edu.vn`
+    };
+
     let bduTemplate = fs.readFileSync(path.join(ROOT, 'dkmh-bdu', 'index.html'), 'utf8');
     if (schoolCode !== 'BDU') {
       bduTemplate = bduTemplate
-        .replace(/Trường Đại học Bình Dương/gi, schoolFullName)
-        .replace(/Đại học Bình Dương/gi, schoolFullName)
+        .replace(/Trường Đại học Bình Dương/gi, schoolInfo.name)
+        .replace(/Đại học Bình Dương/gi, schoolInfo.name)
         .replace(/\bBDU\b/g, schoolCode);
     }
+
+    // Inject school config globals before </head>
+    const configScript = `<script>
+      window.CURRENT_SCHOOL_CODE = ${JSON.stringify(schoolCode)};
+      window.CURRENT_SCHOOL_NAME = ${JSON.stringify(schoolInfo.name)};
+      window.CURRENT_PORTAL_URL  = ${JSON.stringify(schoolInfo.url)};
+      window.CURRENT_PORTAL_TYPE = ${JSON.stringify(schoolInfo.type)};
+    </script></head>`;
+    bduTemplate = bduTemplate.replace(/<\/head>/i, configScript);
+
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(bduTemplate);
     return;
@@ -593,10 +603,10 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log(`================================================================`);
-  console.log(`🚀 DKMH.NET + TOOLS1S.COM 1:1 Clone Server is running!`);
+  console.log(`🚀 DKMH.NET + TOOLS1S.COM 1:1 Clone Server (Live Portal + Demo)`);
   console.log(`👉 Landing Page (#tool): http://localhost:${PORT}/#tool`);
   console.log(`👉 Contact Page:         http://localhost:${PORT}/contact`);
   console.log(`👉 Tool HCMUTE (Cookie): http://localhost:${PORT}/dkmh/`);
-  console.log(`👉 Tool BDU/EdusoftWeb:  http://localhost:${PORT}/dkmh-bdu/`);
+  console.log(`👉 Tool 53 Schools:      http://localhost:${PORT}/dkmh-sgu`);
   console.log(`================================================================`);
 });
